@@ -77,6 +77,14 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.post('/todos/:id/delete', (req,res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 app.listen(3000, () => {
   console.log('The app is Listening on http://localhost:3000')
 })
