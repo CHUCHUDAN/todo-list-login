@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+//首頁render mongodb中所有資料
 app.get('/', (req, res) => {
   Todo.find()
     .lean()
@@ -38,10 +39,12 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error))
 })
 
+//新增todo頁面
 app.get('/todos/new', (req, res) => {
   res.render('new')
 })
 
+//新增todo功能
 app.post('/todos', (req, res) => {
   const name = req.body.name       // 從 req.body 拿出表單裡的 name 資料
   return Todo.create({ name })     // 存入資料庫
@@ -49,6 +52,7 @@ app.post('/todos', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//顯示單筆項資料
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
@@ -57,6 +61,7 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//todo編輯頁面
 app.get('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
@@ -64,19 +69,22 @@ app.get('/todos/:id/edit', (req, res) => {
     .then((todo) => res.render('edit', { todo }))
     .catch(error => console.log(error))
 })
-
+//todo編輯功能
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
+  const {name, isDone} = req.body
   return Todo.findById(id)
     .then(todo => {
       todo.name = name
+      todo.isDone = isDone === "on"
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
     .catch(error => console.log(error))
 })
 
+
+//todo刪除功能
 app.post('/todos/:id/delete', (req,res) => {
   const id = req.params.id
   return Todo.findById(id)
@@ -85,6 +93,8 @@ app.post('/todos/:id/delete', (req,res) => {
     .catch(error => console.log(error))
 })
 
+
+//伺服器啟動並監聽
 app.listen(3000, () => {
   console.log('The app is Listening on http://localhost:3000')
 })
