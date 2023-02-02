@@ -35,6 +35,7 @@ app.set('view engine', 'hbs')
 app.get('/', (req, res) => {
   Todo.find()
     .lean()
+    .sort({name: 'asc'}) //資料排序=>正序
     .then(todos => res.render('index', {todos}))
     .catch(error => console.error(error))
 })
