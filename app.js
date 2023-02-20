@@ -9,6 +9,9 @@ const routes = require('./routes')// 引用路由器
 
 require('./config/mongoose')
 
+//設定埠號
+const PORT = process.env.PORT || 3000
+
 
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -23,6 +26,6 @@ app.set('view engine', 'hbs')
 
 
 //伺服器啟動並監聽
-app.listen(3000, () => {
-  console.log('The app is Listening on http://localhost:3000')
+app.listen(PORT, () => {
+  console.log(`The app is Listening on http://localhost:${PORT}`)
 })
