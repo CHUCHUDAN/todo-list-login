@@ -8,6 +8,8 @@ const methodOverride = require('method-override')
 
 const routes = require('./routes')// 引用路由器
 
+const UsePssport = require('./config/passport')
+
 require('./config/mongoose')
 
 //設定埠號
@@ -24,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(methodOverride('_method'))
 
-
+UsePssport(app)
 
 // 將 request 導入路由器
 app.use(routes)
